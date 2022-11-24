@@ -5,12 +5,14 @@ import ControlPanel from '../components/ControlPanel';
 
 const Timer = () => {
   const [minute, setMinute] = useState([0,0]);
-  const [secondeUnit, setSecondeUnit] = useState(0);
-  const [secondeTen, setSecondeTen] = useState(0);
+  const [seconde, setSeconde] = useState([0,0]);
+
+  let minuteUnit;
+  let minuteTen;
 
   function addMinutes() {
-    let minuteUnit = minute[1] + 1;
-    let minuteTen = minute[0];
+    minuteUnit = minute[1] + 1;
+    minuteTen = minute[0];
     setMinute([minuteTen,minuteUnit]);
     console.log(minute);
 
@@ -20,10 +22,29 @@ const Timer = () => {
         setMinute([minuteTen, minuteUnit]);
     }
   }
+
+  function removeMinutes() {
+    minuteUnit = minute[1] - 1;
+    minuteTen = minute[0];
+    setMinute([minuteTen, minuteUnit]);
+    console.log(minute);
+
+    if(minute[1] <= 0) {
+      minuteUnit = 9;
+      minuteTen -= 1;
+      setMinute([minuteTen, minuteUnit]);
+
+      if(minute[0] <= 0) {
+        minuteUnit = 0;
+        minuteTen = 0;
+        setMinute([minuteTen, minuteUnit]);
+      }
+    }
+  }
   return (
     <div className="flex flex-row justify-center items-center h-screen">
-        <Time minute={minute} secondeUnit={secondeUnit} secondeTen={secondeTen}/>
-        <ControlPanel addMinutes={addMinutes}/>
+        <Time minute={minute} seconde={seconde}/>
+        <ControlPanel addMinutes={addMinutes} removeMinutes={removeMinutes}/>
     </div>
   )
 }
