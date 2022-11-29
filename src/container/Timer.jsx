@@ -108,7 +108,7 @@ const Timer = () => {
           setSeconde((_seconde) => [secondeTen,secondeUnit]);
           setMinute((_minute) => [minuteTen,minuteUnit]);
         }
-      }, 100);
+      }, 1000);
     
     return () => clearInterval(interval);
   },[playActivated,seconde]);
