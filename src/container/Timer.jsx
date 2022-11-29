@@ -117,11 +117,16 @@ const Timer = () => {
     setIsActive(!isActive);
   }
 
+  function resetModal() {
+    closeModal();
+    reset();
+  }
+
   return (
     <div className="flex flex-row justify-center items-center h-screen">
       <Time minute={minute} seconde={seconde} />
       <ControlPanel playStop={playStop.current} addMinutes={addMinutes} play={play} reset={reset} removeMinutes={removeMinutes} />
-      <Modal isActive={isActive} closeModal={closeModal}/>
+      <Modal isActive={isActive} closeModal={closeModal} resetModal={resetModal}/>
     </div>
   )
 }
