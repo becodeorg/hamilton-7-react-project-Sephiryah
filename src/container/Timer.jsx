@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Time from '../components/Time';
 import ControlPanel from '../components/ControlPanel';
+import Modal from './Modal';
 
 const Timer = () => {
-  const [minute, setMinute] = useState([0, 0]);
+  const [minute, setMinute] = useState([0, 1]);
   const [seconde, setSeconde] = useState([0, 0]);
   const [playActivated, setPlayActivated] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   let secondeUnit;
   let secondeTen;
@@ -13,12 +15,11 @@ const Timer = () => {
   let minuteUnit;
   let playStop = useRef("Play");
 
+  
   function addMinutes() {
     if(playActivated == false){
       minuteUnit = minute[1] + 1;
       minuteTen = minute[0];
-
-      console.log(minute);
 
       if (minuteUnit >= 9) {
         minuteUnit = 0;
@@ -32,8 +33,6 @@ const Timer = () => {
     if(playActivated == false) {
       minuteUnit = minute[1] - 1;
       minuteTen = minute[0];
-
-      console.log(minute);
 
       if (minuteUnit <= 0) {
         minuteUnit = 9;
@@ -49,12 +48,12 @@ const Timer = () => {
   }
 
   function reset() {
-    minuteUnit = 0;
-    minuteTen = 0;
-    secondeUnit = 0;
-    secondeTen = 0;
-    setMinute([minuteTen, minuteUnit]);
-    setSeconde([secondeTen, secondeUnit]);
+    setMinute([0, 1]);
+    setSeconde([0, 0]);
+
+    if (playActivated) {
+      setPlayActivated(!playActivated);
+    }
   }
 
   function play() {
@@ -78,9 +77,6 @@ const Timer = () => {
         minuteUnit = minute[1];
 
         if (playActivated) {
-          console.log(playActivated);
-          
-          console.log(seconde)
 
           if(secondeUnit > 0 || secondeTen != 0 || minuteUnit != 0 || minuteTen !== 0) {
             secondeUnit -= 1;
@@ -105,20 +101,27 @@ const Timer = () => {
             minuteUnit = 9;
             minuteTen -= 1;
           }
-
+          
+          if (secondeUnit == 0 && secondeTen == 0 && minuteUnit == 0 && minuteTen == 0) {
+            setIsActive(!isActive);
+          }
           setSeconde((_seconde) => [secondeTen,secondeUnit]);
           setMinute((_minute) => [minuteTen,minuteUnit]);
         }
-      }, 1000);
-    //setSeconde((_seconde) => [secondeUnit,secondeTen]);
-    //setMinute((_minute) => [minuteUnit,minuteTen]);
+      }, 100);
+    
     return () => clearInterval(interval);
   },[playActivated,seconde]);
+
+  function closeModal() {
+    setIsActive(!isActive);
+  }
 
   return (
     <div className="flex flex-row justify-center items-center h-screen">
       <Time minute={minute} seconde={seconde} />
       <ControlPanel playStop={playStop.current} addMinutes={addMinutes} play={play} reset={reset} removeMinutes={removeMinutes} />
+      <Modal isActive={isActive} closeModal={closeModal}/>
     </div>
   )
 }

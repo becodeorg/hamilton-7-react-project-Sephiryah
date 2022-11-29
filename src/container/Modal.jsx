@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
 
-const Modal = () => {
-  
-  const [isActive, setIsActive] = useState(false);
-
-  function closeModal() {
-    setIsActive(isActive => !isActive);
-}
+const Modal = ({closeModal, isActive}) => {
 
   return (
-    <div className="bg-black bg-opacity-50 absolute h-screen w-screen flex justify-center items-center" + (isActive ? "invisible" : "visible")>
+    <div className={`bg-black bg-opacity-50 absolute h-screen w-screen flex justify-center items-center ${isActive ? "visible":"invisible"}`}>
       <div className="bg-gray-400 w-1/2 h-1/2 flex justify-center items-center flex-col rounded">
           <p className="text-5xl text-center mb-10"><strong>It's time to take a break !</strong></p>
           <div className="flex flex-row justify-evenly w-full">
